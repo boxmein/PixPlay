@@ -68,8 +68,7 @@ public class PixPlay extends PApplet {
 			  pixel[mouseX][mouseY] = 0x0;
 		  }
 	  }
-	  //Visuals block
-	  ellipse(mouseX, mouseY, brush*2, brush*2); // Cursor circle - the values are diameter so double the radius
+	  
 	  
 	  //Particle update block
 	  int x=0, y=0;
@@ -105,6 +104,8 @@ public class PixPlay extends PApplet {
 	      }
 	    }
 	  }
+	  //Visuals block
+	  ellipse(mouseX, mouseY, brush*2, brush*2); // Cursor circle - the values are diameter so double the radius
 	}
 	// Mouse events for drawing
 	public void mousePressed () {
