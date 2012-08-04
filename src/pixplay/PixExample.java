@@ -2,8 +2,8 @@ package pixplay;
 /* Element reference: 
  * 0x0: Empty
  * 0x01: PixExample
- * 
- *  
+ * 0x02: PixPowder
+ * 0x03: PixWall
  *  
  *  */
 public class PixExample {
