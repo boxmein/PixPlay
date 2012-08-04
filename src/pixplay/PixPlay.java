@@ -136,11 +136,11 @@ public class PixPlay extends PApplet {
 		else if(key == ' ') 
 			paused = !paused;
 		else if(key == '1') 
-			selected = 0x1;
+			selected = 0x01;
 		else if(key == '2') 
-			selected = 0x2;
+			selected = 0x02;
 		else if(key == '3') 
-			selected = 0x3;
+			selected = 0x03;
 		
 		else return;
 		
