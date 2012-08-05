@@ -9,7 +9,7 @@ public class PixPowder {
 	 *  
 	 *  */
 	public static int colour = 0x00FF00;
-	static byte[] precomputedRandom = new byte[100]; // Precomputed random tables do speed up the process!
+	static byte[] precomputedRandom = new byte[1000]; // Precomputed random tables do speed up the process!
 	Random rnd;
 	static byte generated = 0; // Byte is smaller than boolean. Boolean is int. Also used as iterator for precomputed.
 	static int i=0;
@@ -21,12 +21,15 @@ public class PixPowder {
 		
 	}
 	public static int move(int x, int y) {
-		if (generated == 0) {
+		if (generated == 0 || generated == 10000) {
 			new PixPowder().genRand();
 			generated++;
 			return 1;
 		}
-		if ( x < 399 && x > 1 && y < 399 &&  y > 1 && i < 100) {
+		if ( x+1 < 400 && x > 0 && 
+			y+1 < 400 &&  y > 0 
+				&& i < 100) {
+			
 			if (precomputedRandom[i] == 0 && PixPlay.pixel[x-1][y+1] == 0x0){
 				PixPlay.pixel[x-1][y+1] = 0x02;
 				PixPlay.hasMoved[x-1][y+1] = 1;
@@ -44,16 +47,18 @@ public class PixPowder {
 				PixPlay.hasMoved[x+1][y+1] = 1;
 				PixPlay.pixel[x][y] = 0;
 			}
-			else {
+			else if(PixPlay.pixel[x][y+1] == 0x0) {
 				PixPlay.pixel[x][y+1] = 0x02;
 				PixPlay.hasMoved[x-1][y+1] = 1;
 				PixPlay.pixel[x][y] = 0;
+
 			}
 			
 		}
 		if (i > 99) {
 			i = 0;
 		}
+		i++;
 		generated++;
 		return 0;
 	}
