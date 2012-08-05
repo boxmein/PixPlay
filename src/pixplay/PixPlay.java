@@ -34,7 +34,7 @@ public class PixPlay extends PApplet {
 	  pixel[100][100] = 0x01;
 	  background(0xFFFFFF);
 	  ellipseMode(CENTER); // Draws cursor to the right place
-
+	  noFill();
 	  noCursor(); // Start with no cursor
 	  
 	}
