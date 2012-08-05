@@ -24,27 +24,37 @@ public class PixPowder {
 		if (generated == 0) {
 			new PixPowder().genRand();
 			generated++;
+			return 1;
 		}
 		if ( x < 399 && x > 1 && y < 399 &&  y > 1 && i < 100) {
 			if (precomputedRandom[i] == 0 && PixPlay.pixel[x-1][y+1] == 0x0){
 				PixPlay.pixel[x-1][y+1] = 0x02;
+				PixPlay.hasMoved[x-1][y+1] = 1;
+				PixPlay.pixel[x][y] = 0;
 			}
 			
 			else if(precomputedRandom[i] == 1 && PixPlay.pixel[x][y+1] == 0x0){
 				PixPlay.pixel[x][y+1] = 0x02;
+				PixPlay.hasMoved[x][y+1] = 1;
+				PixPlay.pixel[x][y] = 0;
 			}
 			
 			else if(precomputedRandom[i] == 2 && PixPlay.pixel[x+1][y+1] == 0x0) {
 				PixPlay.pixel[x+1][y+1] = 0x02;
+				PixPlay.hasMoved[x+1][y+1] = 1;
+				PixPlay.pixel[x][y] = 0;
 			}
 			else {
 				PixPlay.pixel[x][y+1] = 0x02;
-			}
-			if (i > 99) {
-				i = 0;
+				PixPlay.hasMoved[x-1][y+1] = 1;
+				PixPlay.pixel[x][y] = 0;
 			}
 			
 		}
+		if (i > 99) {
+			i = 0;
+		}
+		generated++;
 		return 0;
 	}
 	public static int update(int x, int y) {

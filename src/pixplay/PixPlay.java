@@ -8,6 +8,7 @@ public class PixPlay extends PApplet {
 	 */
 	private static final long serialVersionUID = -3911587658158706430L;
 	public static byte[][] pixel;
+	public static byte[][] hasMoved;
 	boolean drawing = false, paused = false, deleting = false;
 	byte selected = 0x2; // PixExample
 	short brush = 1;
@@ -27,8 +28,9 @@ public class PixPlay extends PApplet {
 	
 	public void setup () {
 		
-	  size(450, 400, P2D);
+	  size(450, 400, P2D); // Set rendering mode to P2D, it's faster with pixels
 	  pixel = new byte[areawidth][areaheight];
+	  hasMoved = new byte[areawidth][areaheight];
 	  pixel[100][100] = 0x01;
 	  background(0xFFFFFF);
 	  ellipseMode(CENTER); // Draws cursor to the right place
@@ -85,6 +87,7 @@ public class PixPlay extends PApplet {
 	            if (!paused) {
 	            	PixExample.move(x, y);
 	            	PixExample.update(x, y);
+	            	hasMoved[x][y] = 1;
 	            }
 	            break;
 	          case 0x02: // PixPowder
@@ -92,6 +95,7 @@ public class PixPlay extends PApplet {
 	        	  if (!paused) {
 	        		  PixPowder.move(x, y);
 	        		  PixPowder.update(x, y);
+	        		  hasMoved[x][y] = 1;
 	        	  }
 	        	break;
 	          case 0x03: // PixWall
@@ -102,6 +106,7 @@ public class PixPlay extends PApplet {
 	            break;
 	        }
 	      }
+	      hasMoved[x][y] = 0;
 	    }
 	  }
 	  //Visuals block
@@ -129,11 +134,11 @@ public class PixPlay extends PApplet {
 	// Key events
 	public void keyPressed () {
 		if (keyCode == UP)
-			 if (brush < 100) brush++;
+			 { if (brush < 100) brush++; }
 		else if(keyCode == DOWN)
-			if ( brush > 1) brush--;
+			 { if ( brush > 1) brush--; }
 		
-		else if(key == ' ') 
+		if(key == ' ') 
 			paused = !paused;
 		else if(key == '1') 
 			selected = 0x01;
@@ -142,8 +147,6 @@ public class PixPlay extends PApplet {
 		else if(key == '3') 
 			selected = 0x03;
 		
-		else return;
-		
 		if (paused) { // Turns off cursor when playing
 			cursor(ARROW);
 		}
@@ -151,7 +154,10 @@ public class PixPlay extends PApplet {
 			noCursor();
 		}
 	}
-	
+	 public static void main(String args[])
+	    {
+	      PApplet.main(new String[] { pixplay.PixPlay.class.getName() });
+	}
 	// Circle drawing (Particles!)
 	public void drawCircle(int x, int y) { // This cryptic function from Java Powder
 		int tempy = y; 

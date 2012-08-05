@@ -21,8 +21,10 @@ public class PixExample {
     	PixPlay.pixel[x][y] = 0x0;
     	return 1;
      }
-    if(PixPlay.pixel[x-1][y] == 0x0)
+    if(PixPlay.pixel[x-1][y] == 0x0) {
        PixPlay.pixel[x-1][y] = 0x01;
+       PixPlay.hasMoved[x-1][y] = 1;
+    }
       PixPlay.pixel[x][y] = 0x0;
       return 0; //Success
   }
