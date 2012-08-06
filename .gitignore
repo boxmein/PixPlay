@@ -1,0 +1,9 @@
+.classpath
+.project
+.settings/
+applet/
+application.macosx/
+application.windows/
+application.linux/
+bin/
+lib/
