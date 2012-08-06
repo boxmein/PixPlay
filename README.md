@@ -1,4 +1,4 @@
-##PixPlay
+#PixPlay
 *A small Processing project to use when wanting to try out random algorithms.*  
 Based on Java and Processing.   
 Required libraries: [Processing](http://processing.org/download/), [Java](http://www.java.com/en/)
@@ -35,8 +35,19 @@ Required libraries: [Processing](http://processing.org/download/), [Java](http:/
   **W**: Selects Wall element  
   **C**: Clears the screen  
   **H**: Shows the starting message  
+
 ##Notes
   While playing, the cursor is hidden. While paused, the cursor is shown.  
+
+##How to compile? (With Eclipse!)
+  1. Get the entire source code by either **cloning** or **downloading**.  
+  2. Get Eclipse for Java (Regular), if you haven't already.  
+  3. Get [Proclipsing for Eclipse](http://code.google.com/p/proclipsing/).  
+  4. To export, click the **fancy P icon** left of the test / debug icons and select either **Applet** or **Application**, with the only build configuration there. The finished files will have their own directory in the project root.  
+  5. Zip up the contents of the directories, not the directories themselves!  
+  (PS. If you haven't got them, add the export directories to **.gitignore**)
+
+
 
 
 
