@@ -1,10 +1,10 @@
 package pixplay;
 
-import processing.core.PApplet;
-import processing.core.PFont;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class PixPlay extends PApplet {
 	/**
