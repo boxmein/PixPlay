@@ -14,7 +14,7 @@ public class PixPlay extends PApplet {
 	private static final long serialVersionUID = -3911587658158706430L;
 	public static byte[][] pixel;
 	public static byte[][] hasMoved;
-	
+	public static byte lastElement;
 	boolean drawing = false, 
 			paused = false, 
 			deleting = false, 
@@ -44,7 +44,7 @@ public class PixPlay extends PApplet {
 	
 	public void setup () {
 		
-	  size(450, 400, P2D); // Set rendering mode to P2D, it's faster with pixels
+	  size(450, 400, P2D); // Set rendering mode to P2D, it's faster with pixels and it makes text look pretty
 	  
 	  pixel = new byte[areawidth][areaheight];
 	  hasMoved = new byte[areawidth][areaheight];
@@ -100,6 +100,7 @@ public class PixPlay extends PApplet {
 			  mouseX > 0 &&
 			  mouseY < areaheight &&
 			  mouseY > 0) {
+		  lastElement = selected;
 		  selected = 0x0;
 		  if (brush > 1) {
 			  drawCircle(mouseX, mouseY);
@@ -107,6 +108,7 @@ public class PixPlay extends PApplet {
 		  else {
 			  pixel[mouseX][mouseY] = 0x0;
 		  }
+		  selected = lastElement;
 	  }
 	  
 	  // Button drawing and update block
