@@ -7,3 +7,5 @@ application.windows/
 application.linux/
 bin/
 lib/
+
+preferences.txt
