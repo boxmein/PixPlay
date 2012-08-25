@@ -1,8 +1,8 @@
 package pixplay;
-/* 0xD0 - Clear
- * 0x00 - Laser
- * 0x01 - Powder
- * 0x02 - Wall
+/* -127 - Clear
+ * 0 - Laser
+ * 1 - Powder
+ * 2 - Wall
  * 
  */
 public interface Element {

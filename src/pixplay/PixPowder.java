@@ -1,10 +1,10 @@
 package pixplay;
 import java.util.Random;
 public class PixPowder implements Element{
-	/* 0xD0 - Clear
-	 * 0x00 - Laser
-	 * 0x01 - Powder
-	 * 0x02 - Wall
+	/* -127 - Clear
+	 * 0 - Laser
+	 * 1 - Powder
+	 * 2 - Wall
 	 * 
 	 */
 	public int colour = 0x00FF00;
@@ -29,27 +29,27 @@ public class PixPowder implements Element{
 			y+1 < 400 &&  y > 0 
 				&& i < 100) {
 			
-			if (precomputedRandom[i] == 0 && PixPlay.pixel[x-1][y+1] == 0xD0){
-				PixPlay.pixel[x-1][y+1] = 0x01;
+			if (precomputedRandom[i] == 0 && PixPlay.pixel[x-1][y+1] == -127){
+				PixPlay.pixel[x-1][y+1] = 1;
 				PixPlay.hasMoved[x-1][y+1] = 1;
-				PixPlay.pixel[x][y] = (byte) 0xD0;
+				PixPlay.pixel[x][y] = (byte) -127;
 			}
 			
-			else if(precomputedRandom[i] == 1 && PixPlay.pixel[x][y+1] == 0xD0){
-				PixPlay.pixel[x][y+1] = 0x01;
+			else if(precomputedRandom[i] == 1 && PixPlay.pixel[x][y+1] == -127){
+				PixPlay.pixel[x][y+1] = 1;
 				PixPlay.hasMoved[x][y+1] = 1;
-				PixPlay.pixel[x][y] = (byte) 0xD0;
+				PixPlay.pixel[x][y] = (byte) -127;
 			}
 			
-			else if(precomputedRandom[i] == 2 && PixPlay.pixel[x+1][y+1] == 0xD0) {
-				PixPlay.pixel[x+1][y+1] = 0x01;
+			else if(precomputedRandom[i] == 2 && PixPlay.pixel[x+1][y+1] == -127) {
+				PixPlay.pixel[x+1][y+1] = 1;
 				PixPlay.hasMoved[x+1][y+1] = 1;
-				PixPlay.pixel[x][y] = (byte) 0xD0;
+				PixPlay.pixel[x][y] = (byte) -127;
 			}
-			else if(PixPlay.pixel[x][y+1] == 0xD0) {
-				PixPlay.pixel[x][y+1] = 0x01;
+			else if(PixPlay.pixel[x][y+1] == -127) {
+				PixPlay.pixel[x][y+1] = 1;
 				PixPlay.hasMoved[x-1][y+1] = 1;
-				PixPlay.pixel[x][y] = (byte) 0xD0;
+				PixPlay.pixel[x][y] = (byte) -127;
 
 			}
 			

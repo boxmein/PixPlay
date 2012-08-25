@@ -7,10 +7,10 @@ import processing.core.PApplet;
 import processing.core.PFont;
 
 public class PixPlay extends PApplet {
-	/* 0xD0 - Clear
-	 * 0x00 - Laser
-	 * 0x01 - Powder
-	 * 0x02 - Wall
+	/* -127 - Clear
+	 * 0 - Laser
+	 * 1 - Powder
+	 * 2 - Wall
 	 * 
 	 */
 	PFont font;
@@ -57,7 +57,7 @@ public class PixPlay extends PApplet {
 			"To continue, click any of the buttons!";
 	public void setup () {
 	  size(450, 400, P2D); // Set rendering mode to P2D, it's faster with pixels and it makes text look pretty
-	  
+	  log("Beginning setup.");
 	  pixel = new byte[areawidth][areaheight];
 	  hasMoved = new byte[areawidth][areaheight];
 	  
@@ -81,13 +81,16 @@ public class PixPlay extends PApplet {
 	  buttonList = new ArrayList<Clicky>();
 	  //X, Y are button topleft corner, colour is button color, text is button text, element is button element
 	  			              //x,   y,     colour,          text,   element
-	  buttonList.add(new Clicky(410, 10, elementList.get(0).colour, "L", (byte) 0x1));
-	  buttonList.add(new Clicky(410, 35, elementList.get(1).colour, "P", (byte) 0x2));
-	  buttonList.add(new Clicky(410, 60, elementList.get(2).colour, "W", (byte) 0x3));
+	  buttonList.add(new Clicky(410, 10, elementList.get(0).colour, "L", (byte) 0));
+	  buttonList.add(new Clicky(410, 35, elementList.get(1).colour, "P", (byte) 1));
+	  buttonList.add(new Clicky(410, 60, elementList.get(2).colour, "W", (byte) 2));
 	  buttonList.add(new Clicky(410, 85, 0xFFFFFF,          "C", (byte) 0xFF));
 	  buttonList.add(new Clicky(410, 110, 0xFFFFFF,         "H", (byte) 0xFE));
-	  
-	  
+	  for (y = 0; y < areawidth; y++) 
+		  for (x = 0; x < areawidth; x++) 
+			  pixel[x][y] = -127;
+
+	  log("Ready.");
 	}
 	public void draw() {
 	  //Clear screen
@@ -109,7 +112,7 @@ public class PixPlay extends PApplet {
 			  drawCircle(mouseX, mouseY);
 		  }
 		  else {
-			  if(pixel[mouseX][mouseY] == 0xD0)
+			  if(pixel[mouseX][mouseY] == -127)
 				  pixel[mouseX][mouseY] = selected;
 		  }
 	  }
@@ -119,12 +122,12 @@ public class PixPlay extends PApplet {
 			  mouseY < areaheight &&
 			  mouseY > 0) {
 		  lastElement = selected;
-		  selected = (byte) 0xD0;
+		  selected = (byte) -127;
 		  if (brush > 1) {
 			  drawCircle(mouseX, mouseY);
 		  }
 		  else {
-			  pixel[mouseX][mouseY] =(byte) 0xD0;
+			  pixel[mouseX][mouseY] =(byte) -127;
 		  }
 		  selected = lastElement;
 	  }
@@ -141,7 +144,9 @@ public class PixPlay extends PApplet {
 	  for (y = 0; y < areawidth; y++) {
 	    for (x = 0; x < areaheight; x++) {
 	    	index = pixel[x][y];
-	    	if (index != 0xD0) {
+	    	
+	    	if (index >= 0 && index < elementList.size()) {
+	    		set(x, y, elementList.get(index).colour);
 	    		elementList.get(index).update(x,  y);
 	        	elementList.get(index).move(x, y);
 	    	}
@@ -155,6 +160,7 @@ public class PixPlay extends PApplet {
 	}
 	
 	public void mousePressed () {
+		log("Mouse click: "+mouseButton);
 		if (mouseButton == LEFT) // Draw particles
 			drawing = true;
 		
@@ -172,6 +178,7 @@ public class PixPlay extends PApplet {
 			if (mouseX > each.x && mouseX < (each.x + each.width) &&
 				mouseY > each.y && mouseY < (each.y + each.height) )
 			{
+				log("Clicked button: "+each.toString());
 				buttonPressed(each);
 			}
 		}
@@ -182,7 +189,7 @@ public class PixPlay extends PApplet {
 		if (pressed.text  == "C") { // Clear screen [strcmp is slow, boooooo]
 			for (y=0;y<areawidth;y++) {
 				for (x=0;x<areawidth;x++) {
-					pixel[x][y] = (byte) 0xD0;
+					pixel[x][y] = (byte) -127;
 				}
 			}
 			return;
@@ -194,6 +201,7 @@ public class PixPlay extends PApplet {
 			startTexting = false;
 		}
 		selected = pressed.element;
+		log("Element selected: "+selected);
 	}
 	public void mouseReleased () {
 		drawing = false;
@@ -201,6 +209,7 @@ public class PixPlay extends PApplet {
 	}
 	
 	public void keyPressed () {
+		log("Key pressed: "+keyCode);
 		if (keyCode == UP)
 			 { if (brush < 100) brush++; }
 		else if(keyCode == DOWN)
@@ -209,11 +218,11 @@ public class PixPlay extends PApplet {
 		if(key == ' ') 
 			paused = !paused;
 		else if(key == '1') 
-			selected = 0x00;
+			selected = 0;
 		else if(key == '2') 
-			selected = 0x01;
+			selected = 1;
 		else if(key == '3') 
-			selected = 0x02;
+			selected = 2;
 		
 		if (paused) { // Turns off cursor when playing
 			cursor(ARROW);
@@ -224,6 +233,7 @@ public class PixPlay extends PApplet {
 	}
 
 	 public static void main(String args[]) { // For EXE's
+		  System.out.println("Main started");
 	      PApplet.main(new String[] { pixplay.PixPlay.class.getName() });
 	}
 
@@ -246,5 +256,8 @@ public class PixPlay extends PApplet {
 						pixel[2*x - i][j] = selected;
 				}
 		}
+	}
+	public void log(String msg) {
+		System.out.println(msg);
 	}
 }
