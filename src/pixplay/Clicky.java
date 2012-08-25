@@ -2,10 +2,13 @@ package pixplay;
 
 public class Clicky {
 	public int colour;
-	public int x, y, width, height;
+	
+	public int x, 
+			y, 
+			width, 
+			height;
 	public byte element;
 	String text;
-	
 	public Clicky(int x, int y, int width, int height, int colour, String text, byte element) {
 		this.colour = colour; 
 		this.x = x; 

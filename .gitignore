@@ -7,5 +7,6 @@ application.windows/
 application.linux/
 bin/
 lib/
-
+doc/
+javadoc.xml
 preferences.txt

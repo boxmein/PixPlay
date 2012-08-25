@@ -7,25 +7,39 @@ import processing.core.PApplet;
 import processing.core.PFont;
 
 public class PixPlay extends PApplet {
-	/**
+	/* 0xD0 - Clear
+	 * 0x00 - Laser
+	 * 0x01 - Powder
+	 * 0x02 - Wall
 	 * 
 	 */
 	PFont font;
+	
 	private static final long serialVersionUID = -3911587658158706430L;
+	
 	public static byte[][] pixel;
 	public static byte[][] hasMoved;
+	
 	public static byte lastElement;
-	boolean drawing = false, 
-			paused = false, 
-			deleting = false, 
+	
+	boolean drawing = false,	
+			paused = false,	
+			deleting = false,	
 			startTexting = true;
+	
 	byte selected = 0x2; // PixExample
+	
 	short brush = 1;
+	
 	int areawidth = 400, // Game area!
 	    areaheight = 400,
 	    x=0,
-	    y=0;
+	    y=0,
+	    index = 0;
+	
 	public List<Clicky> buttonList;
+	public List<Element> elementList;
+	
 	String startText = " - PixPlay -  \n Simple pixel simulator in Processing \n" +
 			"Made by boxmein 2012. Permissions to use - license.txt\n\n" +
 			" - Controls -  \n SPACE: Pause / Unpause\n" +
@@ -41,9 +55,7 @@ public class PixPlay extends PApplet {
 			"L: Select Laser element \n P: Select Powder element \n W: Select Wall element \n C: Clear screen \n" +
 			"H: Show this help text\n\n\n" +
 			"To continue, click any of the buttons!";
-	
 	public void setup () {
-		
 	  size(450, 400, P2D); // Set rendering mode to P2D, it's faster with pixels and it makes text look pretty
 	  
 	  pixel = new byte[areawidth][areaheight];
@@ -60,12 +72,18 @@ public class PixPlay extends PApplet {
 	  noCursor(); // Start with no cursor
 	  noSmooth();
 	  
+	  elementList = new ArrayList<Element>();
+	  
+	  elementList.add(new PixExample());
+	  elementList.add(new PixPowder());
+	  elementList.add(new PixWall());
+	  
 	  buttonList = new ArrayList<Clicky>();
 	  //X, Y are button topleft corner, colour is button color, text is button text, element is button element
 	  			              //x,   y,     colour,          text,   element
-	  buttonList.add(new Clicky(410, 10, PixExample.colour, "L", (byte) 0x1));
-	  buttonList.add(new Clicky(410, 35, PixPowder.colour,  "P",(byte) 0x2));
-	  buttonList.add(new Clicky(410, 60, PixWall.colour,    "W",  (byte) 0x3));
+	  buttonList.add(new Clicky(410, 10, elementList.get(0).colour, "L", (byte) 0x1));
+	  buttonList.add(new Clicky(410, 35, elementList.get(1).colour, "P", (byte) 0x2));
+	  buttonList.add(new Clicky(410, 60, elementList.get(2).colour, "W", (byte) 0x3));
 	  buttonList.add(new Clicky(410, 85, 0xFFFFFF,          "C", (byte) 0xFF));
 	  buttonList.add(new Clicky(410, 110, 0xFFFFFF,         "H", (byte) 0xFE));
 	  
@@ -91,7 +109,7 @@ public class PixPlay extends PApplet {
 			  drawCircle(mouseX, mouseY);
 		  }
 		  else {
-			  if(pixel[mouseX][mouseY] == 0x0)
+			  if(pixel[mouseX][mouseY] == 0xD0)
 				  pixel[mouseX][mouseY] = selected;
 		  }
 	  }
@@ -101,12 +119,12 @@ public class PixPlay extends PApplet {
 			  mouseY < areaheight &&
 			  mouseY > 0) {
 		  lastElement = selected;
-		  selected = 0x0;
+		  selected = (byte) 0xD0;
 		  if (brush > 1) {
 			  drawCircle(mouseX, mouseY);
 		  }
 		  else {
-			  pixel[mouseX][mouseY] = 0x0;
+			  pixel[mouseX][mouseY] =(byte) 0xD0;
 		  }
 		  selected = lastElement;
 	  }
@@ -122,37 +140,11 @@ public class PixPlay extends PApplet {
 	  //Particle update block
 	  for (y = 0; y < areawidth; y++) {
 	    for (x = 0; x < areaheight; x++) {
-	      if ( (int) pixel[x][y] != 0 ) {
-	        
-	        switch (pixel[x][y]) { // Converts signed byte to unsigned
-	          
-	          case 0x01: //PixExample
-	        	//println("updating 0x01 with x: "+x+" and y: "+y);
-	            set(x, y, PixExample.colour);
-	            //println("update returned: "+);  
-	            if (!paused) {
-	            	PixExample.move(x, y);
-	            	PixExample.update(x, y);
-	            	hasMoved[x][y] = 1;
-	            }
-	            break;
-	          case 0x02: // PixPowder
-	        	  set (x, y, PixPowder.colour);
-	        	  if (!paused) {
-	        		  PixPowder.move(x, y);
-	        		  PixPowder.update(x, y);
-	        		  hasMoved[x][y] = 1;
-	        	  }
-	        	break;
-	          case 0x03: // PixWall
-	        	  set(x, y, PixWall.colour);
-	        	  break;
-	        	  
-	          default: //Default everything
-	            break;
-	        }
-	      }
-	      hasMoved[x][y] = 0;
+	    	index = pixel[x][y];
+	    	if (index != 0xD0) {
+	    		elementList.get(index).update(x,  y);
+	        	elementList.get(index).move(x, y);
+	    	}
 	    }
 	  }
 	  //Visuals block
@@ -161,7 +153,7 @@ public class PixPlay extends PApplet {
 	  ellipse(mouseX, mouseY, brush*2, brush*2); // Cursor circle - the values are diameter so double the radius
 	  set(mouseX, mouseY, 0x000000);
 	}
-	// Mouse events for drawing
+	
 	public void mousePressed () {
 		if (mouseButton == LEFT) // Draw particles
 			drawing = true;
@@ -185,11 +177,12 @@ public class PixPlay extends PApplet {
 		}
 		
 	}
+	
 	public void buttonPressed (Clicky pressed) {
-		if (pressed.text  == "C") { // Clear screen
+		if (pressed.text  == "C") { // Clear screen [strcmp is slow, boooooo]
 			for (y=0;y<areawidth;y++) {
 				for (x=0;x<areawidth;x++) {
-					pixel[x][y] = 0x0;
+					pixel[x][y] = (byte) 0xD0;
 				}
 			}
 			return;
@@ -206,7 +199,7 @@ public class PixPlay extends PApplet {
 		drawing = false;
 		deleting = false;
 	}
-	// Key events
+	
 	public void keyPressed () {
 		if (keyCode == UP)
 			 { if (brush < 100) brush++; }
@@ -216,11 +209,11 @@ public class PixPlay extends PApplet {
 		if(key == ' ') 
 			paused = !paused;
 		else if(key == '1') 
-			selected = 0x01;
+			selected = 0x00;
 		else if(key == '2') 
-			selected = 0x02;
+			selected = 0x01;
 		else if(key == '3') 
-			selected = 0x03;
+			selected = 0x02;
 		
 		if (paused) { // Turns off cursor when playing
 			cursor(ARROW);
@@ -229,10 +222,12 @@ public class PixPlay extends PApplet {
 			noCursor();
 		}
 	}
-	 public static void main(String args[]) {
+
+	 public static void main(String args[]) { // For EXE's
 	      PApplet.main(new String[] { pixplay.PixPlay.class.getName() });
 	}
-	// Circle drawing (Particles!)
+
+	 
 	public void drawCircle(int x, int y) { // This cryptic function from Java Powder
 		int tempy = y; 
 		for (int i = x - brush; i <= x; i++) {
