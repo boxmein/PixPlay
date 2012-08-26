@@ -106,14 +106,13 @@ public class PixPlay extends PApplet {
 			  mouseX < areawidth && 
 			  mouseX > 0 && 
 			  mouseY < areaheight && 
-			  mouseY > 0 &&
-			  pixel[mouseX][mouseY] == -127) {
+			  mouseY > 0) {
 		  
 		  if (brush > 1) {
 			  drawCircle(mouseX, mouseY);
 		  }
 		  else {
-			 pixel[mouseX][mouseY] = selected;
+			 create(mouseX, mouseY, selected); //pixel[mouseX][mouseY] = selected;
 		  }
 	  }
 	  if (deleting && // Delete particles
@@ -184,7 +183,10 @@ public class PixPlay extends PApplet {
 		}
 		
 	}
-	
+	void create(int x, int y, byte id) {
+		if (pixel[x][y] == -127) 
+			pixel[x][y] = id;
+	}
 	public void buttonPressed (Clicky pressed) {
 		if (pressed.text  == "C") { // Clear screen [strcmp is slow, boooooo]
 			for (y=0;y<areawidth;y++) {
@@ -251,13 +253,14 @@ public class PixPlay extends PApplet {
 				tempy = tempy + 1;
 				for (int j = tempy; j <= 2 * y - tempy; j++) {
 					if (i > 0 && j > 0 && i < areawidth && j < areaheight)
-						pixel[i][j] = selected;
+						create(i, j, selected); //pixel[i][j] = selected;
 					if (2 * x - i > 0 && j > 0 && 2 * x - i < areawidth && j < areaheight)
-						pixel[2*x - i][j] = selected;
+						create(2*x -i, j, selected); //pixel[2*x - i][j] = selected;
 				}
 		}
 	}
 	public void log(String msg) {
 		System.out.println(msg);
+		return;
 	}
 }
