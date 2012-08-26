@@ -157,7 +157,17 @@ public class PixPlay extends PApplet {
 	  ellipse(mouseX, mouseY, brush*2, brush*2); // Cursor circle - the values are diameter so double the radius
 	  set(mouseX, mouseY, 0x000000);
 	}
-	
+	public int packRGB(byte r, byte g, byte b) {
+		return (r<<4) + (g<<2) + b;
+		
+	}
+	public int[] unpackRGB(int packedRGB) {
+		int[] rgb = new int[3];
+		rgb[0] = (packedRGB>>4) & 0xFF;
+		rgb[1] = (packedRGB>>2) & 0xFF;
+		rgb[2] = packedRGB &0xFF;
+		return rgb;
+	}
 	public void mousePressed () {
 		log("Mouse click: "+mouseButton);
 		if (mouseButton == LEFT) // Draw particles
