@@ -14,4 +14,10 @@ public class PixWall implements Element {
 	public int update(int x, int y) {
 		return 0;
 	}
+	public int getColour() {
+		return this.colour;
+	}
+	public void setColour(int colour) {
+		  this.colour = colour;
+	}
 }

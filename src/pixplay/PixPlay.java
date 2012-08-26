@@ -81,9 +81,9 @@ public class PixPlay extends PApplet {
 	  buttonList = new ArrayList<Clicky>();
 	  //X, Y are button topleft corner, colour is button color, text is button text, element is button element
 	  			              //x,   y,     colour,          text,   element
-	  buttonList.add(new Clicky(410, 10, elementList.get(0).colour, "L", (byte) 0));
-	  buttonList.add(new Clicky(410, 35, elementList.get(1).colour, "P", (byte) 1));
-	  buttonList.add(new Clicky(410, 60, elementList.get(2).colour, "W", (byte) 2));
+	  buttonList.add(new Clicky(410, 10, elementList.get(0).getColour(), "L", (byte) 0));
+	  buttonList.add(new Clicky(410, 35, elementList.get(1).getColour(), "P", (byte) 1));
+	  buttonList.add(new Clicky(410, 60, elementList.get(2).getColour(), "W", (byte) 2));
 	  buttonList.add(new Clicky(410, 85, 0xFFFFFF,          "C", (byte) 0xFF));
 	  buttonList.add(new Clicky(410, 110, 0xFFFFFF,         "H", (byte) 0xFE));
 	  for (y = 0; y < areawidth; y++) 
@@ -145,7 +145,7 @@ public class PixPlay extends PApplet {
 	    	index = pixel[x][y];
 	    	
 	    	if (index >= 0 && index < elementList.size()) {
-	    		set(x, y, elementList.get(index).colour);
+	    		set(x, y, elementList.get(index).getColour());
 	    		elementList.get(index).update(x,  y);
 	        	elementList.get(index).move(x, y);
 	    	}

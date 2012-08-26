@@ -7,6 +7,12 @@ package pixplay;
  */
 public class PixExample implements Element {
   public int colour = 0xFF0000; 
+  public int getColour() {
+	  return this.colour;
+  }
+  public void setColour(int colour) {
+	  this.colour = colour;
+  }
   public int update(int x, int y) {
     if ( x > 398 || x < 2 || y < 2 || y > 398) 
      {
