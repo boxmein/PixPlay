@@ -106,14 +106,14 @@ public class PixPlay extends PApplet {
 			  mouseX < areawidth && 
 			  mouseX > 0 && 
 			  mouseY < areaheight && 
-			  mouseY > 0) {
+			  mouseY > 0 &&
+			  pixel[mouseX][mouseY] == -127) {
 		  
 		  if (brush > 1) {
 			  drawCircle(mouseX, mouseY);
 		  }
 		  else {
-			  if(pixel[mouseX][mouseY] == -127)
-				  pixel[mouseX][mouseY] = selected;
+			 pixel[mouseX][mouseY] = selected;
 		  }
 	  }
 	  if (deleting && // Delete particles
