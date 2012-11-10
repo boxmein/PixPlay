@@ -1,4 +1,4 @@
-package pixplay;
+	package pixplay;
 /* This is the laser element. It also has a commentary on how to add an element.
  * 
  * 

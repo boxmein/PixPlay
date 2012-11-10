@@ -29,7 +29,7 @@ public class PixPlay extends PApplet {
 	
 	byte selected = 0x2; // PixExample
 	
-	short brush = 1;
+	short brush = 1, lastButtonY = 0;
 	
 	int areawidth = 400, // Game area!
 	    areaheight = 400,
@@ -74,9 +74,12 @@ public class PixPlay extends PApplet {
 	  
 	  elementList = new ArrayList<Element>();
 	  
-	  elementList.add(new PixExample());
-	  elementList.add(new PixPowder());
-	  elementList.add(new PixWall());
+	  elementList.add(new PixExample());	   // 0
+	   // The element gets auto-assigned an ID and should work. :O
+	  elementList.add(new PixPowder()); 	   // 1
+	  elementList.add(new PixWall()); 	 	   // 2
+	  elementList.add(new PixLangtons());	   // 3
+	  elementList.add(new PixLangtonsTrail()); // 4
 	  
 	  buttonList = new ArrayList<Clicky>();
 	  //X, Y are button topleft corner, colour is button color, text is button text, element is button element
@@ -84,8 +87,12 @@ public class PixPlay extends PApplet {
 	  buttonList.add(new Clicky(410, 10, elementList.get(0).getColour(), "L", (byte) 0));
 	  buttonList.add(new Clicky(410, 35, elementList.get(1).getColour(), "P", (byte) 1));
 	  buttonList.add(new Clicky(410, 60, elementList.get(2).getColour(), "W", (byte) 2));
-	  buttonList.add(new Clicky(410, 85, 0xFFFFFF,          "C", (byte) 0xFF));
-	  buttonList.add(new Clicky(410, 110, 0xFFFFFF,         "H", (byte) 0xFE));
+	  buttonList.add(new Clicky(410, 85, 0xFFFFFF, "C", (byte) 0xFF));
+	  buttonList.add(new Clicky(410, 110, 0xFFFFFF,"H", (byte) 0xFE));
+	  buttonList.add(new Clicky(410, 135, elementList.get(3).getColour(), "A", (byte) 3));
+	  
+	  
+	  //addNewElement(new PixExample(), "P");
 	  for (y = 0; y < areawidth; y++) 
 		  for (x = 0; x < areawidth; x++) 
 			  pixel[x][y] = -127;
@@ -272,5 +279,13 @@ public class PixPlay extends PApplet {
 	public void log(String msg) {
 		System.out.println(msg);
 		return;
+	}
+	byte addNewElement(Element element, String letter) {
+		byte id = 0;
+		id = (byte) (elementList.size() - 1);
+		elementList.add(element);
+		lastButtonY += 25;
+		buttonList.add(new Clicky(410, lastButtonY, elementList.get(id).getColour(), letter, (byte) id));
+		return id;
 	}
 }
